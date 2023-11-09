@@ -1,3 +1,21 @@
+# Ignore Fernet key file
+key.key
+
+# Ignore Python cache files
+__pycache__/*
+
+# Ignore the database file
+database.db
+
+# Ignore debug.log file
+debug.log
+
+# Ignore key.key file
+key.key
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
