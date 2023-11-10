@@ -10,7 +10,7 @@ logging.basicConfig(filename=log_filename, level=logging.DEBUG, format='%(leveln
 # database name and key path
 db = 'database.db'
 
-def debug(msg):
+def debug(msg: str):
     logging.debug(msg)
     # print("[DEBUG] " + msg)
 
@@ -19,7 +19,7 @@ def debug(msg):
 class PasswordDecryptionError(Exception):
     pass
 
-def key():
+def key() -> bytes:
     # Retrieve the Fernet key from the 'secret' table
     debug("Getting Fernet key from the 'secret' table.")
     fernet_key = get_key_from_database()
@@ -38,19 +38,19 @@ def key():
         debug("New Fernet key generated and stored.")
         return fernet_key
 
-def generate_new_key():
+def generate_new_key() -> bytes:
     debug("Generating a new Fernet key.")
     new_key = Fernet.generate_key()
     fernet_key = store_key_in_database(new_key)
     debug("New Fernet key generated and stored.")
     return fernet_key
 
-def export_key_to_file(fernet_key, filename):
+def export_key_to_file(fernet_key: bytes, filename: bytes):
     debug(f"Exporting the Fernet key to the file: {filename}")
     with open(filename, "wb") as key_file:
         key_file.write(fernet_key)
 
-def import_key_from_file(filename):
+def import_key_from_file(filename: bytes) -> bytes:
     debug(f"Importing the Fernet key from the file: {filename}")
     with open(filename, "rb") as key_file:
         fernet_key = key_file.read()
@@ -60,7 +60,7 @@ def import_key_from_file(filename):
 
     return fernet_key
 
-def store_key_in_database(fernet_key):
+def store_key_in_database(fernet_key: bytes):
     debug(f"Storing user in the database")
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -71,7 +71,7 @@ def store_key_in_database(fernet_key):
     conn.commit()
     conn.close()
 
-def get_key_from_database():
+def get_key_from_database() -> bytes or None:
     debug("Getting the Fernet key from the 'secret' table.")
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -115,12 +115,12 @@ def rotate_key():
     conn.commit()
     conn.close()
 
-def securely_store_old_key(old_key):
+def securely_store_old_key(old_key: bytes):
     # Define a function to securely store the old key (e.g., in a backup file)
     with open("old_key.key", "wb") as key_file:
         key_file.write(old_key)
 
-def reencrypt_existing_data(old_key, new_key):
+def reencrypt_existing_data(old_key: bytes, new_key: bytes):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
     # Define a function to re-encrypt existing data with the new key
@@ -175,7 +175,7 @@ def create_database():
     conn.commit()
     conn.close()
 
-def check_duplicate_username(username):
+def check_duplicate_username(username: str):
     debug(f"Checking for duplicate username: {username}")
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -192,7 +192,7 @@ def check_duplicate_username(username):
 
     return existing_user is not None
 
-def store_user_in_database(username, hashed_password, salt, fernet_key):
+def store_user_in_database(username: str, hashed_password: bytes, salt: bytes):
     debug(f"Storing user in the database: {username}")
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -203,7 +203,7 @@ def store_user_in_database(username, hashed_password, salt, fernet_key):
     conn.commit()
     conn.close()
 
-def retrieve_user_info(username):
+def retrieve_user_info(username: str):
     debug(f"Retrieving user info for username: {username}")
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -224,11 +224,11 @@ def retrieve_user_info(username):
 
 ### Passwords ###
 
-def check_duplicate_password(website, fernet_key):
+def check_duplicate_password(website: str, fernet_key: bytes):
     existing_password = retrieve_password(website, fernet_key)
     return existing_password is not None
 
-def retrieve_password(website, fernet_key):
+def retrieve_password(website: str, fernet_key: bytes) -> str or None:
     debug(f"Retrieving password for website: {website}")
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
@@ -254,7 +254,7 @@ def retrieve_password(website, fernet_key):
 
     return None
 
-def store_password(website, password, fernet_key):
+def store_password(website: str, password: str, fernet_key: str):
     debug(f"Fernet key in store_passwd func before encrypt_password() func")
     debug(f"Storing password for website: {website}")
     encrypted_password = encrypt_password(password, fernet_key)
@@ -267,7 +267,7 @@ def store_password(website, password, fernet_key):
     conn.commit()
     conn.close()
 
-def update_password(website, new_password, fernet_key):
+def update_password(website: str, new_password: str, fernet_key: bytes):
   debug(f"Updating password for website: {website}")
 
   if check_duplicate_password(website, fernet_key):
@@ -291,7 +291,7 @@ def update_password(website, new_password, fernet_key):
     print(f"Generated Password for '{website}': {new_password}")
     print(f"Password for '{website}' stored successfully.")
 
-def encrypt_password(password, fernet_key):
+def encrypt_password(password: str, fernet_key: bytes):
     debug(f"Encrypting the password. {fernet_key}")
     fernet = Fernet(fernet_key)
     debug(f"Fernet key after return Fernet() func and store in fernet")
@@ -299,7 +299,7 @@ def encrypt_password(password, fernet_key):
     debug(f"Fernet key after encryption done on passwd and return encrypted_password ")
     return encrypted_password
 
-def decrypt_password(encrypted_password, fernet_key):
+def decrypt_password(encrypted_password: str, fernet_key: bytes):
     debug("Decrypting the password.")
     fernet = Fernet(fernet_key)
     decrypted_password = fernet.decrypt(encrypted_password).decode()
