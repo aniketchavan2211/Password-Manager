@@ -8,11 +8,11 @@ from dbconfig import *
 ## alphabets, digits, meta characters(special characters)
 data = ascii_lowercase + ascii_uppercase + digits + punctuation
 
-def generate_salt():
+def generate_salt() -> bytes:
     salt = os.urandom(16)  # Generate a random 16-byte salt
     return salt
 
-def generate_random_password():
+def generate_random_password(length=16) -> str:
     try:
         length = input("Enter the length of Password (default is 16): ")
         if not length or length == 'd' or length == 'default' or length == 'Default' or length == 'DEFAULT':
@@ -33,7 +33,7 @@ def generate_random_password():
     except Exception as e:
         print(f"Error: {e}")
 
-def hashed_passwd(password, salt):
+def hashed_passwd(password, salt) -> bytes:
     context = password.encode('utf-8')
     salted_password = salt + context
     sha512 = hashlib.sha512()
@@ -41,18 +41,18 @@ def hashed_passwd(password, salt):
     password = sha512.hexdigest()
     return password
 
-def create_passwd(website, password, fernet_key):
+def create_passwd(website: str, password: str, fernet_key: bytes):
     store_password(website, password, fernet_key)
     print("Password Stored Successfully!")
 
-def show_passwd(website, fernet_key):
+def show_passwd(website: str, fernet_key: bytes):
     data = retrieve_password(website, fernet_key)
     if data:
         print("Stored Password:", data)
     else:
         print("Password not found.")
 
-def handle_create_password(username, fernet_key):
+def handle_create_password(username: str, fernet_key: bytes):
     create_database()
     website = input("Enter website, username, app name: ")
     if check_duplicate_password(website, fernet_key):
@@ -89,7 +89,7 @@ def handle_create_password(username, fernet_key):
         else:
             print("Password not stored.")
 
-def handle_show_password(username, fernet_key):
+def handle_show_password(username: str, fernet_key: bytes):
     if username:
       user_is_authenticated = login(username)
       if user_is_authenticated:
@@ -98,7 +98,7 @@ def handle_show_password(username, fernet_key):
       else:
           print("Quiting...")
 
-def create_user(username, fernet_key):
+def create_user(username: str, fernet_key: bytes):
     if not username:
         username = input("Create a new username: ")
     if check_duplicate_username(username):
@@ -116,7 +116,7 @@ def create_user(username, fernet_key):
       store_user_in_database(username, hashed_password, salt, fernet_key)
       print("Account created successfully.")
 
-def verify_user(username, master_password):
+def verify_user(username: str, master_password: str) -> bool:
     password_hash, salt = retrieve_user_info(username)
 
     if password_hash is None or salt is None:
@@ -127,7 +127,7 @@ def verify_user(username, master_password):
     salted_password = hashed_passwd(master_password, salt)
     return password_hash == salted_password
 
-def login(username):
+def login(username: str) -> bool:
     # username = input("Enter your username: ")
     master_password = getpass.getpass("Enter your MASTER password: ")
 
@@ -147,7 +147,7 @@ def parse_arguments():
 
     return parser.parse_args(), parser
 
-def handle_arguments(args, parser, fernet_key):
+def handle_arguments(args, parser, fernet_key: bytes):
 
     if args.create_account:
       username = args.username
