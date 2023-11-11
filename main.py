@@ -19,7 +19,7 @@ def generate_random_password(length=16) -> str:
     """
     Randomly Generate password with default length 16
     includes uppercase, lowercase, integers, and metacharacters(special characters).
-    
+
     :param: length: length of password default set to 16.
     """
     try:
@@ -160,7 +160,7 @@ def verify_user(username: str, master_password: str) -> bool:
 
 def login(username: str) -> bool:
     """
-    Login with username and verify master password 
+    Login with username and verify master password
     """
     # username = input("Enter your username: ")
     master_password = getpass.getpass("Enter your MASTER password: ")
@@ -189,9 +189,9 @@ def handle_arguments(args, parser, fernet_key: bytes):
     if args.create_account:
       username = args.username
       if fernet_key is None:
-        fernet_key = key(username) 
+        fernet_key = key(username)
       create_user(username, fernet_key)
-      
+
 
     elif args.generate:
         password = generate_random_password()
@@ -227,13 +227,12 @@ def handle_arguments(args, parser, fernet_key: bytes):
         filename = args.import_key
         fernet_key = import_key_from_file(filename)
         print("Key imported successfully.")
-    
-    
+
     elif args.export_key:
         filename = args.export_key
         export_key_to_file(fernet_key, filename)
         print("Key exported successfully.")
-    
+
     elif args.rotate_key:
         rotate_key()
 
@@ -242,11 +241,11 @@ def handle_arguments(args, parser, fernet_key: bytes):
 
 # main() function:
 def main():
-  # Create a database file if it doesn't exist  
-  create_database()  
-  
+  # Create a database file if it doesn't exist
+  create_database()
+
   # Create key file if not exist
-  fernet_key = key() 
+  fernet_key = key()
 
   try:
     args, parser = parse_arguments()
