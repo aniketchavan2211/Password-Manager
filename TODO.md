@@ -1,6 +1,6 @@
 ## Password Manager
 
-- **Development[ In Progress ] ** 
+- **Development[ In Progress ]** 
   - [ ] Change Password
   - [ ] Access Control : Authorised User can access their own password.
   - [ ] Database Transaction Feature
