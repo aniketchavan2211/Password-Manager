@@ -11,14 +11,15 @@
 ```zsh
 $ python3 ./main.py -h
 usage: main.py [-h] [-g] [-u username] [-cs] [-c] [-s] [-k]
-               [-i filename] [-e filename] [-r]
+               [-i filename] [-e filename] [-r]               
+Password Management Tool
 
-Password Management Tool                                      
-options:
-  -h, --help            show this help message and exit         -g, --generate        Generate a random password
+options:                                                        -h, --help            show this help message and exit         -g, --generate        Generate a random password
   -u username, --username username                                                    Specify the username for actions        -cs, --create-account                                                               Create a new account
   -c, --create          Create a new password entry
-  -s, --show            Show a stored password                  -k, --gen-key, -generate-key                                                        Generate a new Fernet key               -i filename, --import-key filename
+  -s, --show            Show a stored password
+  -k, --gen-key, -generate-key                                                        Generate a new Fernet key
+  -i filename, --import-key filename
                         Import a Fernet key from a file
   -e filename, --export-key filename
                         Export the Fernet key to a file         -r, --rotate-key      Rotate the encryption key
