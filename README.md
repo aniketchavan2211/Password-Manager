@@ -1,4 +1,4 @@
-## 🔐 Password-Manager 🔐
+## 🔐 Password Manager 🔐
 
 PassMe | Password Manager Tool | Open Source Python Security Project
 
