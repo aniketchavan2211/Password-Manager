@@ -113,7 +113,7 @@ def create_user(username: str, fernet_key: bytes):
     else:
       salt = os.urandom(16)  # Generate a random salt
       hashed_password = hashed_passwd(master_password, salt)
-      store_user_in_database(username, hashed_password, salt, fernet_key)
+      store_user_in_database(username, hashed_password, salt)
       print("Account created successfully.")
 
 def verify_user(username: str, master_password: str) -> bool:
