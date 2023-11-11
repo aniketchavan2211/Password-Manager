@@ -144,6 +144,9 @@ def parse_arguments():
     parser.add_argument("-c", "--create", action="store_true", help="Create a new password entry")
     parser.add_argument("-s", "--show", action="store_true", help="Show a stored password")
     parser.add_argument("-k", "--gen-key", "-generate-key", action="store_true", help="Generate a new Fernet key")
+    parser.add_argument("-i", "--import-key", metavar="filename", help="Import a Fernet key from a file")
+    parser.add_argument("-e", "--export-key", metavar="filename", help="Export the Fernet key to a file")
+    parser.add_argument("-r", "--rotate-key", action="store_true", help="Rotate the encryption key")
 
     return parser.parse_args(), parser
 
@@ -185,6 +188,20 @@ def handle_arguments(args, parser, fernet_key: bytes):
         print("Successfully Generated New Key")
         print("Please Login Again")
         print("Quiting...")
+
+    elif args.import_key:
+        filename = args.import_key
+        fernet_key = import_key_from_file(filename)
+        print("Key imported successfully.")
+    
+    
+    elif args.export_key:
+        filename = args.export_key
+        export_key_to_file(fernet_key, filename)
+        print("Key exported successfully.")
+    
+    elif args.rotate_key:
+        rotate_key()
 
     else:
         parser.print_help()
