@@ -1,10 +1,16 @@
 ## Password Manager
 
-- User Interface
+- **Development[ In Progress ] ** 
+  - [ ] Change Password
+  - [ ] Access Control : Authorised User can access their own password.
+  - [ ] Database Transaction Feature
+  - [ ] Strong Password Policy
+
+- [ ] User Interface
   - [x] CLI
   - [ ] GUI
 
-- Database for Storing Passwords
+- [ ] Database for Storing Passwords
   - [x] SQLite3
   - [ ] Postgresql
   - [ ] MySQL
@@ -16,7 +22,7 @@
 
 - [x] Generate Secure Passwords
 
-- Data Security [ ]
+- [ ] Data Security [ ]
   - [x] Encryption
   - [x] Hashing
   - [x] Salting
@@ -29,4 +35,4 @@
   - [ ] SQL injection
 
 - [ ]  User Education
-  - [ ] Documentation
+  - [ ] Documentation 
