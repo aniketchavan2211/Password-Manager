@@ -215,10 +215,6 @@ def main():
   fernet_key = key() 
 
   try:
-
-    # export_key_to_file(fernet_key, 'key.key')
-    # import_key_from_file('key.key')
-    # rotate_key()
     args, parser = parse_arguments()
     handle_arguments(args, parser, fernet_key)
 
