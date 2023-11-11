@@ -1,8 +1,9 @@
 ## 🔐 Password Manager 🔐
 
-PassMe | Password Manager Tool | Open Source Python Security Project
+`PassMe` | `Password Manager Tool` |<br />
+`Open Source Python Security Project`
 
-**PassMe** is **Password Manager Tool use to generate randomly hard complex passwo**rd and saved them securely, you add custom password  and also features keys manually import, and export and rotate function for better security. 
+**PassMe** is **Password Manager Tool** use to generate randomly hard complex password and saved them securely, you add custom password  and also features keys manually import, and export and rotate function for better security. 
 
 
 <br />
