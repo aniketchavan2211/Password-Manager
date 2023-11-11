@@ -1,32 +1,32 @@
 ## Password Manager
 
 - User Interface
-  - CLI [x]
-  - GUI [ ]
+  - [x] CLI
+  - [ ] GUI
 
 - Database for Storing Passwords
-  - SQLite3 [x]
-  - Postgresql [ ]
-  - MySQL [ ]
+  - [x] SQLite3
+  - [ ] Postgresql
+  - [ ] MySQL
 
-- User Authentication [x]
+- [x] User Authentication
 
-- Password Encryption [ ]
-  - AES-128 Encryption,  HMAC (Hash-Based Message Authentication Code) algorithm with SHA256 [x]
-  - Stronger AES Encryption [ ]
+- [x] Password Encryption
+  - [x] AES-128 Encryption,  HMAC (Hash-Based Message Authentication Code) algorithm with SHA256
 
-- Generate Secure Passwords [x]
+- [x] Generate Secure Passwords
 
 - Data Security [ ]
-  - Encryption [x]
-  - Hashing [x]
-  - Salting [x]
-  - Strong Cryptographic Functions [ ]
+  - [x] Encryption
+  - [x] Hashing
+  - [x] Salting
+  - [ ] Strong Cryptographic Functions
 
-- Backup and Recovery [ ]
+- [ ] Backup and Recovery
 
-- Testing [ ]
-  - SQL injection [ ]
+- [ ] Testing
+  - [ ] Manual Testing
+  - [ ] SQL injection
 
-- User Education [ ]
-  - Documentation [ ]
+- [ ]  User Education
+  - [ ] Documentation
