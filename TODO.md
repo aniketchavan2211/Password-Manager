@@ -29,6 +29,8 @@
   - [ ] Strong Cryptographic Functions
 
 - [ ] Backup and Recovery
+  - [ ] Forgot Password
+  - [ ] OTP Verification
 
 - [ ] Testing
   - [ ] Manual Testing
