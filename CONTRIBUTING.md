@@ -8,7 +8,7 @@ If you encounter bugs, have feature requests, or want to suggest improvements, p
 
 #### Pull Requests
 
-1. Fork the repository and create your branch from `main`.
+1. Fork the repository and create your branch from `master`.
 2. If you've added code that should be tested, add tests.
 3. Ensure your code passes the existing tests and linting.
 4. Make sure to update the documentation to reflect any changes.

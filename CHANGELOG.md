@@ -1,4 +1,4 @@
-Test Format
+**Test Format**
 
 ## Unreleased
 
@@ -11,7 +11,7 @@ Test Format
 ### Fixed
 - Resolved issue.
 
-## Version 1.0.0 - 2023-11-14
+## Version 1.0.0 - 2023-11-[00]
 
 ### Added
 - Feature Y for increased customization.

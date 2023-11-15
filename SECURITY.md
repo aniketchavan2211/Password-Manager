@@ -4,7 +4,7 @@
 
 We take the security of our project seriously. If you discover any security issues or vulnerabilities, we appreciate your responsible disclosure. Please follow these steps to report a vulnerability:
 
-1. **Privately disclose the issue to us:** Send an email to [aniketchavan2211@gmail.com](aniketchavan2211@gmail.com) detailing the vulnerability. Please avoid public disclosure until we have had a chance to address the issue.
+1. **Privately disclose the issue to us:** Send an email to [aniketchavan2211@gmail.com](mailto:aniketchavan2211@gmail.com) detailing the vulnerability. Please avoid public disclosure until we have had a chance to address the issue.
 
 2. **Provide necessary details:** Include as much information as possible about the vulnerability, including a clear description, steps to reproduce, and any potential impact.
 
