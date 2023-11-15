@@ -53,31 +53,31 @@ def hashed_passwd(password, salt) -> bytes:
     password = sha512.hexdigest()
     return password
 
-def create_passwd(website: str, password: str, fernet_key: bytes):
+def create_passwd(website: str, password: str, user_specific_key: bytes):
     """
     Store password with app name and encrypted password using fernet key.
     """
-    store_password(website, password, fernet_key)
+    store_password(website, password, user_specific_key)
     print("Password Stored Successfully!")
 
-def show_passwd(website: str, fernet_key: bytes):
+def show_passwd(website: str, user_specific_key: bytes):
     """
     retrieve password from database and show password
     if not then show warning password doesn't exists.
     """
-    data = retrieve_password(website, fernet_key)
+    data = retrieve_password(website, user_specific_key)
     if data:
         print("Stored Password:", data)
     else:
         print("Password not found.")
 
-def handle_create_password(username: str, fernet_key: bytes):
+def handle_create_password(username: str, user_specific_key: bytes):
     """
     create or update existing password or new custom password or new generated password for user.
     """
     create_database()
     website = input("Enter website, username, app name: ")
-    if check_duplicate_password(website, fernet_key):
+    if check_duplicate_password(website, user_specific_key):
         print(f"Password for '{website}' already exists. Do you want to update it? (y/n/c)")
         print("Choose an option for the password:")
         print(("1. Update with Generated Password: PRESS y"))
@@ -86,11 +86,11 @@ def handle_create_password(username: str, fernet_key: bytes):
         choice = input()
         if choice.lower() == 'y':
             password = generate_random_password()
-            update_password(website, password, fernet_key)
+            update_password(website, password, user_specific_key)
             print(f"Generated Password: {password}")
         elif choice.lower() == 'c':
             custom_password = input("Enter your custom password: ")
-            update_password(website, custom_password, fernet_key)
+            update_password(website, custom_password, user_specific_key)
             print(f"Custom Password updated for '{website}'.")
         else:
             print("Password not updated.")
@@ -101,17 +101,17 @@ def handle_create_password(username: str, fernet_key: bytes):
         choice = input()
         if choice == '1':
             generated_password = generate_random_password()
-            store_password(website, generated_password, fernet_key)
+            store_password(website, generated_password, user_specific_key)
             print(f"Generated Password: {generated_password}")
             print(f"Generated Password for '{website}' stored successfully.")
         elif choice == '2':
             custom_password = input("Enter your custom password: ")
-            store_password(website, custom_password, fernet_key)
+            store_password(website, custom_password, user_specific_key)
             print(f"Custom Password for '{website}' stored successfully.")
         else:
             print("Password not stored.")
 
-def handle_show_password(username: str, fernet_key: bytes):
+def handle_show_password(username: str, user_specific_key: bytes):
     """
     verify user, show user their passwords
     """
@@ -123,15 +123,20 @@ def handle_show_password(username: str, fernet_key: bytes):
       else:
           print("Quiting...")
 
-def create_user(username: str, fernet_key: bytes):
+def create_user(username: str, user_specific_key: bytes):
     """
     Create new user account, checks user already exists, verify master password, and store salted and hashed password.
     """
+    create_database()
     if not username:
         username = input("Create a new username: ")
     if check_duplicate_username(username):
           print(f"User '{username}' already exists. Account creation not allowed.")
           return
+
+    # Generate a unique Fernet key for each user
+    user_specific_key = generate_new_key(username)
+
 
     master_password = getpass.getpass("Create a MASTER password:  ")
     verify_master_password = getpass.getpass("Confirm again:  ")
@@ -141,6 +146,8 @@ def create_user(username: str, fernet_key: bytes):
     else:
       salt = os.urandom(16)  # Generate a random salt
       hashed_password = hashed_passwd(master_password, salt)
+      
+      # Store the user-specific Fernet key along with other account details
       store_user_in_database(username, hashed_password, salt)
       print("Account created successfully.")
 
@@ -184,13 +191,14 @@ def parse_arguments():
 
     return parser.parse_args(), parser
 
-def handle_arguments(args, parser, fernet_key: bytes):
+def handle_arguments(args, parser):
 
     if args.create_account:
       username = args.username
-      if fernet_key is None:
-        fernet_key = key(username)
-      create_user(username, fernet_key)
+      user_specific_key =  get_key_from_database(username)
+      if user_specific_key is None:
+        user_specific_key = key(username)
+      create_user(username, user_specific_key)
 
 
     elif args.generate:
@@ -205,7 +213,8 @@ def handle_arguments(args, parser, fernet_key: bytes):
         user_is_authenticated = login(username)
         if user_is_authenticated:
           print("User Authenticated")
-          handle_create_password(username, fernet_key)
+          user_specific_key = get_key_from_database(username)
+          handle_create_password(username, user_specific_key)
 
     elif args.show:
       username = args.username
@@ -215,13 +224,18 @@ def handle_arguments(args, parser, fernet_key: bytes):
       user_is_authenticated = login(username)
       if user_is_authenticated:
         website = input("Enter website, username, app name: ")
-        show_passwd(website, fernet_key)
+        user_specific_key = key(username)
+        show_passwd(website, user_specific_key)
 
     elif args.gen_key:
-        fernet_key = generate_new_key()
-        print("Successfully Generated New Key")
-        print("Please Login Again")
-        print("Quiting...")
+        username = args.username
+        if username: 
+          user_specific_key = generate_new_key(username)
+          print("Successfully Generated New Key")
+          print("Please Login Again")
+          print("Quiting...")
+        else:
+          print("Please pass Username using -u or --username.")
 
     elif args.import_key:
         filename = args.import_key
@@ -243,13 +257,10 @@ def handle_arguments(args, parser, fernet_key: bytes):
 def main():
   # Create a database file if it doesn't exist
   create_database()
-
-  # Create key file if not exist
-  fernet_key = key()
-
+ 
   try:
     args, parser = parse_arguments()
-    handle_arguments(args, parser, fernet_key)
+    handle_arguments(args, parser)
 
   except KeyboardInterrupt:
       print("\nOperation was interrupted by the user.\nQuiting...")
