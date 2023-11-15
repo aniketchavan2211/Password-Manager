@@ -43,6 +43,7 @@
     ```bash
     pip install -r requirements.txt
     ```
+   (Till yet no requirements.txt is uploaded.)
 
 3. Run the Password Manager.
 
