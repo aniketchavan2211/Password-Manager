@@ -210,7 +210,6 @@ def handle_arguments(args, parser):
         user_specific_key = key(username)
       create_user(username, user_specific_key)
 
-
     elif args.generate:
         password = generate_random_password()
         print("Generated Password:", password)
