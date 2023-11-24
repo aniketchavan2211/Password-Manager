@@ -13,7 +13,7 @@
 import os, getpass, argparse, hashlib
 from string import ascii_lowercase, ascii_uppercase, digits, punctuation
 from secrets import choice
-from dbconfig import *
+from module.dbconfig import *
 
 ## alphabets, digits, meta characters(special characters)
 data = ascii_lowercase + ascii_uppercase + digits + punctuation
@@ -247,9 +247,15 @@ def handle_arguments(args, parser):
           print("Please pass Username using -u or --username.")
 
     elif args.import_key:
-        filename = args.import_key
-        fernet_key = import_key_from_file(filename)
-        print("Key imported successfully.")
+        username = args.username
+        if username:
+            user_is_authenticated = login(username)
+            if user_is_authenticated:
+                print("User Authenticated")
+                filename = args.import_key
+                user_specific_key = key(username)
+                user_specific_key = import_key_from_file(username, filename, user_specific_key)
+                print("Key imported successfully.")
 
     elif args.export_key:
         username = args.username

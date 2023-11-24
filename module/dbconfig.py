@@ -66,7 +66,7 @@ def export_key_to_file(user_specific_key: bytes, filename: bytes):
     with open(filename, "wb") as key_file:
         key_file.write(user_specific_key)
 
-def import_key_from_file(filename: bytes) -> bytes:
+def import_key_from_file(username: str, filename: bytes, user_specific_key: bytes) -> bytes:
     """
     Import fernet key and store it in database.
     """
@@ -75,7 +75,7 @@ def import_key_from_file(filename: bytes) -> bytes:
         user_specific_key = key_file.read()
 
     # Store the imported key in the 'secret' table
-    store_key_in_database(user_specific_key)
+    store_key_in_database(username ,user_specific_key)
 
     return user_specific_key
 
@@ -333,11 +333,11 @@ def update_password(website: str, new_password: str, user_specific_key: bytes):
     cursor = conn.cursor()
 
     # Retrieve the existing password
-    existing_password = retrieve_password(website, fernet_key)
+    existing_password = retrieve_password(website, user_specific_key)
     print(f"Existing Password for '{website}': {existing_password}")
 
     # Replace the existing password with the new one using an SQL UPDATE statement
-    cursor.execute("UPDATE passwords SET encrypted_password = ? WHERE website = ?", (encrypt_password(new_password, fernet_key), website))
+    cursor.execute("UPDATE passwords SET encrypted_password = ? WHERE website = ?", (encrypt_password(new_password, user_specific_key), website))
     conn.commit()
     conn.close()
 
