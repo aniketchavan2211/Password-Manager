@@ -11,7 +11,7 @@ database.db
 debug.log
 
 # Ignore key.key file
-key.key
+*.key
 
 
 
