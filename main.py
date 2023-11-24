@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 
+"""
+
+    Project Name: PassMe (Copyright 2023)
+    Description: PassMe is Password Manager Tool use to store strong passwords for any applications.
+    Author: Aniket Chavan
+    Date: 30 Oct 2023
+
+"""
+
+# Modules
 import os, getpass, argparse, hashlib
 from string import ascii_lowercase, ascii_uppercase, digits, punctuation
 from secrets import choice
@@ -146,7 +156,7 @@ def create_user(username: str, user_specific_key: bytes):
     else:
       salt = os.urandom(16)  # Generate a random salt
       hashed_password = hashed_passwd(master_password, salt)
-      
+
       # Store the user-specific Fernet key along with other account details
       store_user_in_database(username, hashed_password, salt)
       print("Account created successfully.")
@@ -229,7 +239,7 @@ def handle_arguments(args, parser):
 
     elif args.gen_key:
         username = args.username
-        if username: 
+        if username:
           user_specific_key = generate_new_key(username)
           print("Successfully Generated New Key")
           print("Please Login Again")
@@ -257,7 +267,7 @@ def handle_arguments(args, parser):
 def main():
   # Create a database file if it doesn't exist
   create_database()
- 
+
   try:
     args, parser = parse_arguments()
     handle_arguments(args, parser)
