@@ -115,7 +115,7 @@ def get_key_from_database(username) -> bytes or None:
         debug("Fernet key not found in the database.")
         return None
 
-def rotate_key():
+def rotate_key(username):
     """
     Export old key and generate new fernet key and re encrypt passwords using new key.
     """
@@ -125,7 +125,7 @@ def rotate_key():
     new_key = Fernet.generate_key()
 
     # Load the old key from the 'secret' table
-    old_key = get_key_from_database()
+    old_key = get_key_from_database(username)
 
     if old_key:
         # Retrieve and re-encrypt existing data with the new key

@@ -252,12 +252,24 @@ def handle_arguments(args, parser):
         print("Key imported successfully.")
 
     elif args.export_key:
+        username = args.username
         filename = args.export_key
-        export_key_to_file(fernet_key, filename)
-        print("Key exported successfully.")
+        if username:
+            user_is_authenticated = login(username)
+            if user_is_authenticated:
+                print("User Authenticated")
+                user_specific_key = key(username)
+                export_key_to_file(user_specific_key, filename)
+                print("Key exported successfully.")
+        else:
+            print("Please provide with username!")
 
     elif args.rotate_key:
-        rotate_key()
+        username = args.username
+        if username:
+            rotate_key(username)
+        else:
+            print("Please provide with username!")
 
     else:
         parser.print_help()
