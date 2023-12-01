@@ -10,7 +10,7 @@
 """
 
 # Modules
-import os, getpass, argparse, hashlib
+import os, getpass, argparse, bcrypt
 from string import ascii_lowercase, ascii_uppercase, digits, punctuation
 from secrets import choice
 from module.dbconfig import *
@@ -22,7 +22,7 @@ def generate_salt() -> bytes:
     """
     Generate a random 16-byte salt.
     """
-    salt = os.urandom(16)
+    salt = bcrypt.gensalt()
     return salt
 
 def generate_random_password(length=16) -> str:
@@ -56,11 +56,7 @@ def hashed_passwd(password, salt) -> bytes:
     """
     This function use to hash and salting password.
     """
-    context = password.encode('utf-8')
-    salted_password = salt + context
-    sha512 = hashlib.sha512()
-    sha512.update(salted_password)
-    password = sha512.hexdigest()
+    password = bcrypt.hashpw(password.encode('utf-8'), salt)
     return password
 
 def create_passwd(website: str, password: str, user_specific_key: bytes):
@@ -154,7 +150,7 @@ def create_user(username: str, user_specific_key: bytes):
       print("Password doesn't match")
       print("Account creation not allowed.!!!")
     else:
-      salt = os.urandom(16)  # Generate a random salt
+      salt = generate_salt()  # Generate a random salt
       hashed_password = hashed_passwd(master_password, salt)
 
       # Store the user-specific Fernet key along with other account details
@@ -184,7 +180,7 @@ def login(username: str) -> bool:
 
     user_is_authenticated = verify_user(username, master_password)
     if user_is_authenticated == False:
-      print("Quiting...")
+      print("Password does't Match\nQuiting...")
     return user_is_authenticated
 
 def parse_arguments():
