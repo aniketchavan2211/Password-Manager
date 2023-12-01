@@ -34,13 +34,13 @@ def generate_random_password(length=16) -> str:
     """
     try:
         length = input("Enter the length of Password (default is 16): ")
-        if not length or length == 'd' or length == 'default' or length == 'Default' or length == 'DEFAULT':
+        if not length or length.lower() in ['d', 'default']:
             length = int(16)
-        elif int(length) < 4 or int(length) >= 32:
+        elif 4 <= int(length) < 32:
+            length = int(length)
+        else:
             print("Please enter length between 4 - 32 \nDefault length = 16")
             length = int(16)
-        else:
-            length = int(length)
 
         password = ''.join(choice(data) for _ in range(length))
         return password
