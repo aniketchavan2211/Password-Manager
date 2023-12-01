@@ -132,7 +132,7 @@ def rotate_key(username):
         reencrypt_existing_data(old_key, new_key)
 
         # Update the 'secret' table with the new key
-        store_key_in_database(new_key)
+        store_key_in_database(username, new_key)
 
         # Securely store the old key for potential decryption
         securely_store_old_key(old_key)
