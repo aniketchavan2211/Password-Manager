@@ -277,7 +277,7 @@ def handle_arguments(args, parser):
         parser.print_help()
 
 # main() function:
-def main():
+if __name__ == '__main__':
   # Create a database file if it doesn't exist
   create_database()
 
@@ -289,6 +289,3 @@ def main():
       print("\nOperation was interrupted by the user.\nQuiting...")
   except PasswordDecryptionError as e:
       print(f"Password decryption error: {e}")
-
-if __name__ == '__main__':
-    main()
