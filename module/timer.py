@@ -17,8 +17,9 @@ def timer(func):
         return rv
     return wrapper
 
-@timer
-def test():
-    pass
+# Decorator function
+# @timer
+# def test():
+#     pass
 
-test()
+# test()
